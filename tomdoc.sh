@@ -27,10 +27,11 @@ sed -E '/(^#\!)|(^$)/d' "$file" |
         esac
 
         test -n "$func" -a -n "$doc" && {
-            echo "- $func"
+            echo "--------------------------------------------------------------------------------"
+            echo "$func"
             echo
-            echo "$doc" | sed -E 's/^#/ /'
-            echo
+            echo "$doc" | sed -E 's/^# ?//'
+
             func=
             doc=
         }

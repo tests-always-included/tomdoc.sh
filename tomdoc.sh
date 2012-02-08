@@ -1,8 +1,7 @@
 #!/bin/sh
-# Shell script for parsing TomDoc and generating pretty documentation from it
+# Parse TomDoc'd shell scripts and generate pretty documentation from it
 #
 # Written by Mathias Lafeldt <mathias.lafeldt@gmail.com>
-#
 
 file="$1"
 

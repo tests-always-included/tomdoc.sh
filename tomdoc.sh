@@ -6,7 +6,7 @@
 
 file="$1"
 
-cat "$file" |
+sed -E '/(^#\!)|(^$)/d' "$file" |
 (
     func=
     doc=

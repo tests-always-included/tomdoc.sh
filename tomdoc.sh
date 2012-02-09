@@ -56,6 +56,9 @@ parse_tomdoc() {
             doc="$doc$line
 "
             ;;
+        '')
+            doc=
+            ;;
         [!#]*)
             test -n "$doc" && {
                 # XXX only support functions for now

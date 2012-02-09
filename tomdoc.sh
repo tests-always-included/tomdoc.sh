@@ -3,7 +3,31 @@
 #
 # Written by Mathias Lafeldt <mathias.lafeldt@gmail.com>
 
+generate=generate_text
+
+while test "$#" -ne 0; do
+    case "$1" in
+    -t|--t|--te|--tex|--text)
+        generate=generate_text
+        shift ;;
+    -m|--m|--ma|--mar|--mark|--markd|--markdo|--markdow|--markdown)
+        generate=generate_markdown
+        shift ;;
+    [!-]*)
+        break ;;
+    *)
+        echo >&2 "error: invalid option '$1'"
+        exit 1
+        ;;
+    esac
+done
+
 file="$1"
+test -n "$file" || {
+    echo >&2 "error: filename missing"
+    exit 1
+}
+
 
 generate_text() {
     cat <<EOF
@@ -22,9 +46,7 @@ $(echo "$2" | sed 's/^/    /')
 EOF
 }
 
-generate=generate_markdown
-
-parse() {
+parse_tomdoc() {
     doc=
     while read -r line; do
         case "$line" in
@@ -46,4 +68,4 @@ parse() {
     done
 }
 
-cat "$file" | parse
+cat -- "$file" | parse_tomdoc

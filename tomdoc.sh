@@ -3,6 +3,8 @@
 #
 # Written by Mathias Lafeldt <mathias.lafeldt@gmail.com>
 
+TOMDOCSH_VERSION="0.1.0"
+
 generate=generate_text
 
 while test "$#" -ne 0; do

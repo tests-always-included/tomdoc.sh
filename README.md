@@ -12,15 +12,17 @@ Usage
 
 Generate plain text:
 
-    $ tomdoc.sh some_script.sh
+    $ tomdoc.sh <shell-script>
 
 Generate markdown:
 
-    $ tomdoc.sh --markdown some_script.sh
+    $ tomdoc.sh --markdown <shell-script>
 
 For testing, you can run tomdoc.sh on itself:
 
     $ ./tomdoc.sh tomdoc.sh
+
+The generated output can be seen [here][fixtures].
 
 
 License
@@ -43,4 +45,5 @@ Contact
 [LICENSE]: https://github.com/mlafeldt/tomdoc.sh/blob/master/LICENSE
 [Sharness]: https://github.com/mlafeldt/Sharness
 [TomDoc]: http://tomdoc.org
+[fixtures]: https://github.com/mlafeldt/tomdoc.sh/tree/master/test/fixtures
 [tomdoc.rb]: https://github.com/defunkt/tomdoc

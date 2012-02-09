@@ -87,6 +87,7 @@ parse_tomdoc() {
             ;;
        esac
     done
+    :
 }
 
 exec cat -- "$file" | parse_tomdoc

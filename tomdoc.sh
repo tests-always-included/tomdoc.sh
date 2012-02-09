@@ -5,7 +5,7 @@
 
 file="$1"
 
-generate() {
+generate_text() {
     cat <<EOF
 --------------------------------------------------------------------------------
 $1
@@ -13,6 +13,16 @@ $1
 $2
 EOF
 }
+
+generate_markdown() {
+    cat <<EOF
+### $1
+
+$(echo "$2" | sed 's/^/    /')
+EOF
+}
+
+generate=generate_markdown
 
 parse() {
     doc=
@@ -28,7 +38,7 @@ parse() {
             test -n "$doc" && {
                 # XXX only support functions for now
                 func="$(expr "$line" : '\([a-zA-Z_]*\)[ \t]*()')" &&
-                generate "$func()" "$doc"
+                "$generate" "$func()" "$doc"
                 doc=
             }
             ;;

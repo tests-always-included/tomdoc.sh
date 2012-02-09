@@ -26,7 +26,9 @@ For testing, you can run tomdoc.sh on itself:
 License
 -------
 
-tomdoc.sh is licensed under the terms of the MIT License. See [LICENSE] file.
+* tomdoc.sh is licensed under the terms of the MIT License. See [LICENSE] file.
+* [Sharness] and all tests are licensed under the terms of the GNU General
+  Public License version 2 or higher. See file [COPYING] for full license text.
 
 
 Contact
@@ -37,6 +39,8 @@ Contact
 * Twitter: [@mlafeldt](https://twitter.com/mlafeldt)
 
 
+[COPYING]: https://github.com/mlafeldt/tomdoc.sh/blob/master/test/COPYING
 [LICENSE]: https://github.com/mlafeldt/tomdoc.sh/blob/master/LICENSE
+[Sharness]: https://github.com/mlafeldt/Sharness
 [TomDoc]: http://tomdoc.org
 [tomdoc.rb]: https://github.com/defunkt/tomdoc

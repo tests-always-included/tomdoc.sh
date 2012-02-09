@@ -5,34 +5,35 @@
 
 file="$1"
 
-sed -E '/(^#\!)|(^$)/d' "$file" |
-(
-    func=
-    doc=
+generate() {
+    cat <<EOF
+--------------------------------------------------------------------------------
+$1
 
+$2
+EOF
+}
+
+parse() {
+    doc=
     while read -r line; do
         case "$line" in
-        '# Public: '*)
+        '#'|'# '*)
+            line="${line#\#}"
+            line="${line# }"
             doc="$doc$line
 "
             ;;
-        '#'*)
-            test -n "$doc" && doc="$doc$line
-"
+        [!#]*)
+            test -n "$doc" && {
+                # XXX only support functions for now
+                func="$(expr "$line" : '\([a-zA-Z_]*\)[ \t]*()')" &&
+                generate "$func()" "$doc"
+                doc=
+            }
             ;;
-        *'()'*)
-            test -n "$doc" && func="$(expr "$line" : '\(.*\)()')"
-            ;;
-        esac
-
-        test -n "$func" -a -n "$doc" && {
-            echo "--------------------------------------------------------------------------------"
-            echo "$func()"
-            echo
-            echo "$doc" | sed -E 's/^# ?//'
-
-            func=
-            doc=
-        }
+       esac
     done
-)
+}
+
+cat "$file" | parse

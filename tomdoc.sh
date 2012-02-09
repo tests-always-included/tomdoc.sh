@@ -55,7 +55,8 @@ generate_markdown() {
     cat <<EOF
 ### $1
 
-$(echo "$2" | sed 's/^/    /')
+$(echo "$2" | sed 's/^/    /;s/[ \t]*$//')
+
 EOF
 }
 

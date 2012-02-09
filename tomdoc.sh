@@ -71,4 +71,4 @@ parse_tomdoc() {
     done
 }
 
-cat -- "$file" | parse_tomdoc
+exec cat -- "$file" | parse_tomdoc

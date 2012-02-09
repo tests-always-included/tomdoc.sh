@@ -10,7 +10,17 @@ Inspired by [tomdoc.rb].
 Usage
 -----
 
+Generate plain text:
+
     $ tomdoc.sh some_script.sh
+
+Generate markdown:
+
+    $ tomdoc.sh --markdown some_script.sh
+
+For testing, you can run tomdoc.sh on itself:
+
+    $ ./tomdoc.sh tomdoc.sh
 
 
 License

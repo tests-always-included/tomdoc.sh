@@ -28,7 +28,13 @@ test -n "$file" || {
     exit 1
 }
 
-
+# Generate the documentation for a shell function in plain text format and write
+# it to stdout.
+#
+# $1 - Function name
+# $2 - TomDoc string w/o leading '#'
+#
+# Returns nothing.
 generate_text() {
     cat <<EOF
 --------------------------------------------------------------------------------
@@ -38,6 +44,13 @@ $2
 EOF
 }
 
+# Generate the documentation for a shell function in markdown format and write
+# it to stdout.
+#
+# $1 - Function name
+# $2 - TomDoc string w/o leading '#'
+#
+# Returns nothing.
 generate_markdown() {
     cat <<EOF
 ### $1
@@ -46,6 +59,10 @@ $(echo "$2" | sed 's/^/    /')
 EOF
 }
 
+# Read lines from stdin, look for TomDoc'd shell functions, and pass them to a
+# generator for formatting.
+#
+# Returns nothing.
 parse_tomdoc() {
     doc=
     while read -r line; do

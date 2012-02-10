@@ -18,6 +18,10 @@ while test "$#" -ne 0; do
         grep '^#/' <"$0" | cut -c4-
         exit 0
         ;;
+    --version)
+        echo "tomdoc.sh version $TOMDOCSH_VERSION"
+        exit 0
+        ;;
     -t|--t|--te|--tex|--text)
         generate=generate_text
         shift ;;

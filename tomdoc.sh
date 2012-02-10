@@ -4,6 +4,7 @@
 # Written by Mathias Lafeldt <mathias.lafeldt@gmail.com>
 
 set -e
+test -n "$TOMDOCSH_DEBUG" && set -x
 
 TOMDOCSH_VERSION="0.1.0"
 

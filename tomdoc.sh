@@ -1,5 +1,7 @@
 #!/bin/sh
-# Parse TomDoc'd shell scripts and generate pretty documentation from it
+#/ Usage: tomdoc.sh [--text|--markdown] [<shell-script>]
+#/
+#/ Parse TomDoc'd shell scripts and generate pretty documentation from it.
 #
 # Written by Mathias Lafeldt <mathias.lafeldt@gmail.com>
 
@@ -12,6 +14,10 @@ generate=generate_text
 
 while test "$#" -ne 0; do
     case "$1" in
+    -h|--h|--he|--hel|--help)
+        grep '^#/' <"$0" | cut -c4-
+        exit 0
+        ;;
     -t|--t|--te|--tex|--text)
         generate=generate_text
         shift ;;

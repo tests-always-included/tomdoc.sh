@@ -89,16 +89,13 @@ parse_tomdoc() {
             doc="$doc$line
 "
             ;;
-        '')
-            doc=
-            ;;
-        [!#]*)
+        *)
             test -n "$doc" && {
                 # XXX only support functions for now
                 func="$(expr "$line" : '\([a-zA-Z_]*\)[ \t]*()' 2>/dev/null)" &&
                 "$generate" "$func()" "$doc"
-                doc=
             }
+            doc=
             ;;
        esac
     done

@@ -95,7 +95,7 @@ parse_tomdoc() {
         [!#]*)
             test -n "$doc" && {
                 # XXX only support functions for now
-                func="$(expr "$line" : '\([a-zA-Z_]*\)[ \t]*()')" &&
+                func="$(expr "$line" : '\([a-zA-Z_]*\)[ \t]*()' 2>/dev/null)" &&
                 "$generate" "$func()" "$doc"
                 doc=
             }

@@ -1,10 +1,16 @@
+### uncomment()
+
+    Strip leading whitespace and '#' from TomDoc strings.
+
+    Returns nothing.
+
 ### generate_text()
 
     Generate the documentation for a shell function in plain text format and write
     it to stdout.
 
     $1 - Function name
-    $2 - TomDoc string w/o leading '#'
+    $2 - TomDoc string
 
     Returns nothing.
 
@@ -14,7 +20,7 @@
     it to stdout.
 
     $1 - Function name
-    $2 - TomDoc string w/o leading '#'
+    $2 - TomDoc string
 
     Returns nothing.
 

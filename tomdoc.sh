@@ -43,11 +43,18 @@ test -n "$file" || {
     exit 1
 }
 
+# Strip leading whitespace and '#' from TomDoc strings.
+#
+# Returns nothing.
+uncomment() {
+    sed -E 's/^[ \t]*# ?//'
+}
+
 # Generate the documentation for a shell function in plain text format and write
 # it to stdout.
 #
 # $1 - Function name
-# $2 - TomDoc string w/o leading '#'
+# $2 - TomDoc string
 #
 # Returns nothing.
 generate_text() {
@@ -55,7 +62,8 @@ generate_text() {
 --------------------------------------------------------------------------------
 $1
 
-$2
+$(echo "$2" | uncomment)
+
 EOF
 }
 
@@ -63,14 +71,14 @@ EOF
 # it to stdout.
 #
 # $1 - Function name
-# $2 - TomDoc string w/o leading '#'
+# $2 - TomDoc string
 #
 # Returns nothing.
 generate_markdown() {
     cat <<EOF
 ### $1
 
-$(echo "$2" | sed '/^$/!s/^/    /')
+$(echo "$2" | uncomment | sed '/^$/!s/^/    /')
 
 EOF
 }
@@ -84,8 +92,6 @@ parse_tomdoc() {
     while read -r line; do
         case "$line" in
         '#'|'# '*)
-            line="${line#\#}"
-            line="${line# }"
             doc="$doc$line
 "
             ;;

@@ -15,33 +15,22 @@ generate=generate_text
 while test "$#" -ne 0; do
     case "$1" in
     -h|--h|--he|--hel|--help)
-        grep '^#/' <"$0" | cut -c4-
-        exit 0
-        ;;
+        grep '^#/' <"$0" | cut -c4-; exit 0 ;;
     --version)
-        echo "tomdoc.sh version $TOMDOCSH_VERSION"
-        exit 0
-        ;;
+        echo "tomdoc.sh version $TOMDOCSH_VERSION"; exit 0 ;;
     -t|--t|--te|--tex|--text)
-        generate=generate_text
-        shift ;;
+        generate=generate_text; shift ;;
     -m|--m|--ma|--mar|--mark|--markd|--markdo|--markdow|--markdown)
-        generate=generate_markdown
-        shift ;;
+        generate=generate_markdown; shift ;;
     [!-]*)
         break ;;
     *)
-        echo >&2 "error: invalid option '$1'"
-        exit 1
-        ;;
+        echo >&2 "error: invalid option '$1'"; exit 1 ;;
     esac
 done
 
 file="$1"
-test -n "$file" || {
-    echo >&2 "error: filename missing"
-    exit 1
-}
+test -n "$file" || { echo >&2 "error: filename missing"; exit 1; }
 
 # Strip leading whitespace and '#' from TomDoc strings.
 #

@@ -24,10 +24,10 @@ while test "$#" -ne 0; do
         generate=generate_markdown; shift ;;
     --)
         shift; break ;;
-    [!-]*)
-        break ;;
-    *)
+    -*)
         echo >&2 "error: invalid option '$1'"; exit 1 ;;
+    *)
+        break ;;
     esac
 done
 

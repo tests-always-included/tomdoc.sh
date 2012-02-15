@@ -8,7 +8,7 @@
 set -e
 test -n "$TOMDOCSH_DEBUG" && set -x
 
-TOMDOCSH_VERSION="0.1.0"
+TOMDOCSH_VERSION="0.1.1"
 
 generate=generate_text
 

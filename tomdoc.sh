@@ -22,6 +22,8 @@ while test "$#" -ne 0; do
         generate=generate_text; shift ;;
     -m|--m|--ma|--mar|--mark|--markd|--markdo|--markdow|--markdown)
         generate=generate_markdown; shift ;;
+    --)
+        shift; break ;;
     [!-]*)
         break ;;
     *)

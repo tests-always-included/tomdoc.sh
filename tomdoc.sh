@@ -8,6 +8,7 @@
 set -e
 test -n "$TOMDOCSH_DEBUG" && set -x
 
+# Current version of tomdoc.sh.
 TOMDOCSH_VERSION="0.1.1"
 
 generate=generate_text
@@ -34,6 +35,7 @@ done
 file="$1"
 test -n "$file" || { echo >&2 "error: filename missing"; exit 1; }
 
+
 # Strip leading whitespace and '#' from TomDoc strings.
 #
 # Returns nothing.
@@ -41,10 +43,10 @@ uncomment() {
     sed -E 's/^[ \t]*# ?//'
 }
 
-# Generate the documentation for a shell function in plain text format and write
-# it to stdout.
+# Generate the documentation for a shell function or variable in plain text
+# format and write it to stdout.
 #
-# $1 - Function name
+# $1 - Function or variable name
 # $2 - TomDoc string
 #
 # Returns nothing.
@@ -58,10 +60,10 @@ $(echo "$2" | uncomment)
 EOF
 }
 
-# Generate the documentation for a shell function in markdown format and write
-# it to stdout.
+# Generate the documentation for a shell function or variable in markdown format
+# and write it to stdout.
 #
-# $1 - Function name
+# $1 - Function or variable name
 # $2 - TomDoc string
 #
 # Returns nothing.
@@ -74,8 +76,20 @@ $(echo "$2" | uncomment | sed '/^$/!s/^/    /')
 EOF
 }
 
-# Read lines from stdin, look for TomDoc'd shell functions, and pass them to a
-# generator for formatting.
+# Read lines from stdin, look for shell function or variable definition, and
+# print function or variable name if found; otherwise, print nothing.
+#
+# Returns nothing.
+parse_code() {
+    ws='[[:space:]]*'
+    name='[a-zA-Z_][a-zA-Z0-9_]*'
+    sed -n -E \
+        -e "s/^$ws(function)?$ws($name)$ws\(\).*$/\2()/p" \
+        -e "s/^$ws(export)?$ws($name)=.*$/\2/p"
+}
+
+# Read lines from stdin, look for TomDoc'd shell functions and variables, and
+# pass them to a generator for formatting.
 #
 # Returns nothing.
 parse_tomdoc() {
@@ -88,16 +102,15 @@ parse_tomdoc() {
             ;;
         *)
             test -n "$line" -a -n "$doc" && {
-                # XXX only support functions for now, dirty code ahead
-                func="$(expr "${line#function}" : \
-                    '[[:space:]]*\([a-zA-Z_][a-zA-Z0-9_]*\)[[:space:]]*()' 2>/dev/null)" &&
-                "$generate" "$func()" "$doc"
+                name="$(echo "$line" | parse_code)"
+                test -n "$name" && "$generate" "$name" "$doc"
             }
             doc=
             ;;
-       esac
+        esac
     done
-    :
 }
 
-cat -- "$file" | parse_tomdoc
+parse_tomdoc <"$file"
+
+:

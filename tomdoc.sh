@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ Usage: tomdoc.sh [--text|--markdown] [<shell-script>]
+#/ Usage: tomdoc.sh [--text | --markdown] [<shell-script>...]
 #/
 #/ Parse TomDoc'd shell scripts and generate pretty documentation from it.
 #
@@ -25,15 +25,14 @@ while test "$#" -ne 0; do
         generate=generate_markdown; shift ;;
     --)
         shift; break ;;
+    -|[!-]*)
+        break ;;
     -*)
         echo >&2 "error: invalid option '$1'"; exit 1 ;;
-    *)
-        break ;;
     esac
 done
 
-file="$1"
-test -n "$file" || { echo >&2 "error: filename missing"; exit 1; }
+test "$#" -ne 0 || { echo >&2 "error: filename missing"; exit 1; }
 
 
 # Regular expression matching whitespace.
@@ -114,6 +113,6 @@ parse_tomdoc() {
     done
 }
 
-parse_tomdoc <"$file"
+cat -- "$@" | parse_tomdoc
 
 :

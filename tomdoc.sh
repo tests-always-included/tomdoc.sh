@@ -40,7 +40,7 @@ test -n "$file" || { echo >&2 "error: filename missing"; exit 1; }
 #
 # Returns nothing.
 uncomment() {
-    sed -E 's/^[ \t]*# ?//'
+    sed -E 's/^[[:space:]]*# ?//'
 }
 
 # Generate the documentation for a shell function or variable in plain text

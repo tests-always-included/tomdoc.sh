@@ -2,6 +2,14 @@
 
     Current version of tomdoc.sh.
 
+### SPACE_RE
+
+    Regular expression matching whitespace.
+
+### NAME_RE
+
+    Regular expression matching shell function or variable name.
+
 ### uncomment()
 
     Strip leading whitespace and '#' from TomDoc strings.

@@ -36,11 +36,16 @@ file="$1"
 test -n "$file" || { echo >&2 "error: filename missing"; exit 1; }
 
 
+# Regular expression matching whitespace.
+SPACE_RE='[[:space:]]*'
+# Regular expression matching shell function or variable name.
+NAME_RE='[a-zA-Z_][a-zA-Z0-9_]*'
+
 # Strip leading whitespace and '#' from TomDoc strings.
 #
 # Returns nothing.
 uncomment() {
-    sed -E 's/^[[:space:]]*# ?//'
+    sed -E "s/^$SPACE_RE# ?//"
 }
 
 # Generate the documentation for a shell function or variable in plain text
@@ -81,11 +86,9 @@ EOF
 #
 # Returns nothing.
 parse_code() {
-    ws='[[:space:]]*'
-    name='[a-zA-Z_][a-zA-Z0-9_]*'
     sed -n -E \
-        -e "s/^$ws(function)?$ws($name)$ws\(\).*$/\2()/p" \
-        -e "s/^$ws(export)?$ws($name)=.*$/\2/p"
+        -e "s/^$SPACE_RE(function)?$SPACE_RE($NAME_RE)$SPACE_RE\(\).*$/\2()/p" \
+        -e "s/^$SPACE_RE(export)?$SPACE_RE($NAME_RE)=.*$/\2/p"
 }
 
 # Read lines from stdin, look for TomDoc'd shell functions and variables, and

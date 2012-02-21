@@ -14,3 +14,5 @@ install: all
 
 uninstall:
 	$(RM) '$(DESTDIR)$(bindir)/tomdoc.sh'
+
+.PHONY: all test install uninstall

@@ -7,6 +7,21 @@ from it. Eventually.
 Inspired by [tomdoc.rb].
 
 
+Installation
+------------
+
+Installing tomdoc.sh is simple:
+
+    $ git clone git://github.com/mlafeldt/tomdoc.sh.git
+    $ cd tomdoc.sh
+    $ make install
+
+That will install tomdoc.sh to `$HOME/bin` by default. For a different target
+directory, set `bindir` accordingly, e.g.
+
+    # make install bindir=/usr/local/bin
+
+
 Usage
 -----
 

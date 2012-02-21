@@ -5,6 +5,9 @@ bindir ?= $(prefix)/bin
 
 all:
 
+test: all
+	$(MAKE) -C test
+
 install: all
 	$(INSTALL) -d -m 755 '$(DESTDIR)$(bindir)'
 	$(INSTALL) tomdoc.sh '$(DESTDIR)$(bindir)'

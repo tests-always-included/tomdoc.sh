@@ -2,9 +2,9 @@ tomdoc.sh
 =========
 
 tomdoc.sh will parse [TomDoc]'d shell scripts and generate pretty documentation
-from it. Eventually.
+from it.
 
-Inspired by [tomdoc.rb].
+It was inspired by [tomdoc.rb].
 
 
 Installation
@@ -25,19 +25,32 @@ directory, set `bindir` accordingly, e.g.
 Usage
 -----
 
-Generate plain text:
+    tomdoc.sh [--text | --markdown] [<shell-script>...]
 
-    $ tomdoc.sh <shell-script>
+For each TomDoc'd shell script you pass to tomdoc.sh, it will generate pretty
+documentation in plain text (option `--text`, the default) or markdown format
+(`--markdown`), writing the results to the standard output.
 
-Generate markdown:
-
-    $ tomdoc.sh --markdown <shell-script>
+The `<shell-script>` operands are processed in command-line order. If
+`<shell-script>` is a single dash (-) or absent, tomdoc.sh reads from the
+standard input.
 
 For testing, you can run tomdoc.sh on itself:
 
-    $ ./tomdoc.sh tomdoc.sh
+    $ ./tomdoc.sh --text tomdoc.sh
+    $ ./tomdoc.sh --markdown tomdoc.sh
 
 The generated output can be seen [here][fixtures].
+
+
+Automated Tests
+---------------
+
+The `test` folder contains some automated test scripts powered by [Sharness].
+
+You can run the tests this way:
+
+    $ make test
 
 
 License

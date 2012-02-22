@@ -32,8 +32,6 @@ while test "$#" -ne 0; do
     esac
 done
 
-test "$#" -ne 0 || { echo >&2 "error: filename missing"; exit 1; }
-
 
 # Regular expression matching whitespace.
 SPACE_RE='[[:space:]]*'

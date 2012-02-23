@@ -42,7 +42,7 @@ NAME_RE='[a-zA-Z_][a-zA-Z0-9_]*'
 #
 # Returns nothing.
 uncomment() {
-    sed "s/^$SPACE_RE# \?//"
+    sed -e "s/^$SPACE_RE# \{0,1\}//"
 }
 
 # Generate the documentation for a shell function or variable in plain text
@@ -73,7 +73,7 @@ generate_markdown() {
     cat <<EOF
 ### $1
 
-$(echo "$2" | uncomment | sed '/^$/!s/^/    /')
+$(echo "$2" | uncomment | sed -e "/^$/!s/^/    /")
 
 EOF
 }
@@ -84,8 +84,8 @@ EOF
 # Returns nothing.
 parse_code() {
     sed -n \
-        -e "s/^$SPACE_RE\(function\)\?$SPACE_RE\($NAME_RE\)$SPACE_RE().*$/\2()/p" \
-        -e "s/^$SPACE_RE\(export\)\?$SPACE_RE\($NAME_RE\)=.*$/\2/p"
+        -e "s/^$SPACE_RE\(function\)\{0,1\}$SPACE_RE\($NAME_RE\)$SPACE_RE().*$/\2()/p" \
+        -e "s/^$SPACE_RE\(export\)\{0,1\}$SPACE_RE\($NAME_RE\)=.*$/\2/p"
 }
 
 # Read lines from stdin, look for TomDoc'd shell functions and variables, and

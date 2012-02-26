@@ -1,7 +1,7 @@
 prefix ?= $(HOME)
 bindir ?= $(prefix)/bin
 
-TOMDOCSH_VERSION := $(shell command -v git >/dev/null && \
+TOMDOCSH_VERSION := $(shell test -d .git && command -v git >/dev/null && \
 	git describe --tags --match "v[0-9]*" --abbrev=4 --dirty | cut -c2- || \
 	sed -n -e "s/TOMDOCSH_VERSION=\"\(.*\)\"/\1/p" tomdoc.sh)
 

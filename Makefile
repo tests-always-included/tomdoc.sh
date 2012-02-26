@@ -1,5 +1,3 @@
-INSTALL ?= install
-
 prefix ?= $(HOME)
 bindir ?= $(prefix)/bin
 
@@ -13,9 +11,10 @@ test: all
 	$(MAKE) -C test
 
 install: all
-	$(INSTALL) -d -m 755 '$(DESTDIR)$(bindir)'
-	$(INSTALL) tomdoc.sh '$(DESTDIR)$(bindir)'
-	sed -i -e "s/\(TOMDOCSH_VERSION\)=.*/\1=\"$(TOMDOCSH_VERSION)\"/" '$(DESTDIR)$(bindir)/tomdoc.sh'
+	mkdir -p '$(DESTDIR)$(bindir)'
+	sed -e "s/\(TOMDOCSH_VERSION\)=.*/\1=\"$(TOMDOCSH_VERSION)\"/" tomdoc.sh > \
+	'$(DESTDIR)$(bindir)/tomdoc.sh'
+	chmod 755 '$(DESTDIR)$(bindir)/tomdoc.sh'
 
 uninstall:
 	$(RM) '$(DESTDIR)$(bindir)/tomdoc.sh'

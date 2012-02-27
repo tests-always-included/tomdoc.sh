@@ -4,7 +4,33 @@ tomdoc.sh
 tomdoc.sh will parse [TomDoc]'d shell scripts and generate pretty documentation
 from it.
 
-It was inspired by [tomdoc.rb].
+TomDoc for shell? - Absolutely. Even though TomDoc was originally specified to
+document Ruby code, it turns out to be a good fit for shell scripts too. Proof:
+
+```sh
+# Public: Execute commands in debug mode.
+#
+# $1 - Commands to be executed.
+#
+# Takes a single argument and evaluates it only when the test script is started
+# with --debug. This is primarily meant for use during the development of test
+# scripts.
+#
+# Examples
+#
+#   test_debug "cat some_log_file"
+#
+# Returns the status code of the last command executed in debug mode or 0
+#   otherwise.
+test_debug() {
+	test "$debug" = "" || eval "$1"
+}
+```
+
+For maximum portability, tomdoc.sh was written in POSIX shell and only depends
+on ubiquitous Unix tools like `sed(1)` and `grep(1)`.
+
+The project was inspired by [tomdoc.rb].
 
 
 Installation
@@ -27,7 +53,7 @@ Usage
 
     tomdoc.sh [--text | --markdown] [<shell-script>...]
 
-For each TomDoc'd shell script you pass to tomdoc.sh, it will generate pretty
+For each TomDoc'd shell script you pass to tomdoc.sh, it will produce pretty
 documentation in plain text (option `--text`, the default) or markdown format
 (`--markdown`), writing the results to the standard output.
 
@@ -43,8 +69,8 @@ For testing, you can run tomdoc.sh on itself:
 The generated output can be seen [here][fixtures].
 
 
-Automated Tests
----------------
+Tests
+-----
 
 The `test` folder contains some automated test scripts powered by [Sharness].
 

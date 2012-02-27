@@ -1,0 +1,3 @@
+install: make install
+script: make test TEST_OPTS="-v"
+after_script: make uninstall

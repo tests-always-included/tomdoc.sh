@@ -1,6 +1,15 @@
 History
 =======
 
+0.1.2 (2012-02-27)
+------------------
+
+* Support TomDoc'd shell variables.
+* Use `sed(1)` in a portable way.
+* Allow to read from multiple files and standard input.
+* Add Makefile to install or uninstall tomdoc.sh.
+* Add Travis CI config.
+
 0.1.1 (2012-02-16)
 ------------------
 

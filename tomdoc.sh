@@ -9,7 +9,7 @@ set -e
 test -n "$TOMDOCSH_DEBUG" && set -x
 
 # Current version of tomdoc.sh.
-TOMDOCSH_VERSION="0.1.1"
+TOMDOCSH_VERSION="0.1.2"
 
 generate=generate_text
 

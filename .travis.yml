@@ -1,4 +1,11 @@
 language: erlang # no C/shell language support; use least-loaded worker(s)
+
 install: make install
-script: make test TEST_OPTS="-v"
+
+env:
+  - TEST_OPTS=-v
+  - DEFAULT_TEST_TARGET=prove
+
+script: make test
+
 after_script: make uninstall

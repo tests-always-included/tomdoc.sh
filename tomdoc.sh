@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ Usage: tomdoc.sh [--text | --markdown] [<shell-script>...]
+#/ Usage: tomdoc.sh [--text | --markdown] [--access <level>] [<shell-script>...]
 #/
 #/ Parse TomDoc'd shell scripts and generate pretty documentation from it.
 #
@@ -12,6 +12,7 @@ test -n "$TOMDOCSH_DEBUG" && set -x
 TOMDOCSH_VERSION="0.1.2"
 
 generate=generate_text
+access=
 
 while test "$#" -ne 0; do
     case "$1" in
@@ -23,6 +24,9 @@ while test "$#" -ne 0; do
         generate=generate_text; shift ;;
     -m|--m|--ma|--mar|--mark|--markd|--markdo|--markdow|--markdown)
         generate=generate_markdown; shift ;;
+    -a|--a|--ac|--acc|--acce|--acces|--access)
+        test "$#" -ge 2 || { echo >&2 "error: $1 requires an argument"; exit 1; }
+        access="$2"; shift 2 ;;
     --)
         shift; break ;;
     -|[!-]*)
@@ -102,6 +106,15 @@ parse_tomdoc() {
             ;;
         *)
             test -n "$line" -a -n "$doc" && {
+                # Match access level if given.
+                test -n "$access" &&
+                case "$doc" in
+                "# $access:"*)
+                    ;;
+                *)
+                    doc=; continue ;;
+                esac
+
                 name="$(echo "$line" | parse_code)"
                 test -n "$name" && "$generate" "$name" "$doc"
             }

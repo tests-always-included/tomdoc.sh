@@ -1,5 +1,11 @@
 #!/bin/sh
-#/ Usage: tomdoc.sh [--text | --markdown] [--access <level>] [<shell-script>...]
+#/ Usage: tomdoc.sh [options] [--] [<shell-script>...]
+#/
+#/     -h, --help               show help text
+#/     --version                show version
+#/     -t, --text               produce plain text (default format)
+#/     -m, --markdown           produce markdown
+#/     -a, --access <level>     filter by access level
 #/
 #/ Parse TomDoc'd shell scripts and generate pretty documentation from it.
 #

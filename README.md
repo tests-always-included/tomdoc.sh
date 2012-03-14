@@ -8,24 +8,50 @@ TomDoc for shell? - Absolutely. Even though TomDoc was originally specified to
 document Ruby code, it turns out to be a good fit for shell scripts too. Proof:
 
 ```sh
+# Public: Current API version in format "x.y.z".
+export API_VERSION="1.2.3"
+
 # Public: Execute commands in debug mode.
-#
-# $1 - Commands to be executed.
 #
 # Takes a single argument and evaluates it only when the test script is started
 # with --debug. This is primarily meant for use during the development of test
 # scripts.
 #
+# $1 - Commands to be executed.
+#
 # Examples
 #
 #   test_debug "cat some_log_file"
 #
-# Returns the status code of the last command executed in debug mode or 0
+# Returns the exit code of the last command executed in debug mode or 0
 #   otherwise.
 test_debug() {
 	test "$debug" = "" || eval "$1"
 }
 ```
+
+Passing the above to tomdoc.sh results in:
+
+### API_VERSION
+
+    Public: Current API version in format "x.y.z".
+
+### test_debug()
+
+    Public: Execute commands in debug mode.
+
+    Takes a single argument and evaluates it only when the test script is started
+    with --debug. This is primarily meant for use during the development of test
+    scripts.
+
+    $1 - Commands to be executed.
+
+    Examples
+
+      test_debug "cat some_log_file"
+
+    Returns the exit code of the last command executed in debug mode or 0
+      otherwise.
 
 For maximum portability, tomdoc.sh was written in POSIX shell and only depends
 on ubiquitous Unix tools like `sed(1)` and `grep(1)`.
@@ -51,11 +77,20 @@ directory, set `bindir` accordingly, e.g.
 Usage
 -----
 
-    tomdoc.sh [--text | --markdown] [<shell-script>...]
+    Usage: tomdoc.sh [options] [--] [<shell-script>...]
+
+        -h, --help               show help text
+        --version                show version
+        -t, --text               produce plain text (default format)
+        -m, --markdown           produce markdown
+        -a, --access <level>     filter by access level
 
 For each TomDoc'd shell script you pass to tomdoc.sh, it will produce pretty
 documentation in plain text (option `--text`, the default) or markdown format
 (`--markdown`), writing the results to the standard output.
+
+With `--access`, output can be limited to shell functions and variables
+documented as "Public", "Internal", or "Deprecated".
 
 The `<shell-script>` operands are processed in command-line order. If
 `<shell-script>` is a single dash (-) or absent, tomdoc.sh reads from the

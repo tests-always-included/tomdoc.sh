@@ -95,7 +95,8 @@ EOF
 parse_code() {
     sed -n \
         -e "s/^$SPACE_RE\(function\)\{0,1\}$SPACE_RE\($NAME_RE\)$SPACE_RE().*$/\2()/p" \
-        -e "s/^$SPACE_RE\(export\)\{0,1\}$SPACE_RE\($NAME_RE\)=.*$/\2/p"
+        -e "s/^$SPACE_RE\(export\)\{0,1\}$SPACE_RE\($NAME_RE\)=.*$/\2/p" \
+        -e "s/^${SPACE_RE}export$SPACE_RE\($NAME_RE\).*$/\1/p"
 }
 
 # Read lines from stdin, look for TomDoc'd shell functions and variables, and

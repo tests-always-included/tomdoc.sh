@@ -1,6 +1,15 @@
 History
 =======
 
+0.1.3 (2012-03-15)
+------------------
+
+* Allow to filter TomDoc'd functions and variables by access level (via
+  `--access`). For example, with "--access Public" only TomDoc strings starting
+  with "Public:" are processed.
+* Let Travis CI use Erlang workers and run `prove(1)`.
+* Update to Sharness v0.2.1.
+
 0.1.2 (2012-02-27)
 ------------------
 

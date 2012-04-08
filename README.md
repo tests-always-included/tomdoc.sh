@@ -53,6 +53,8 @@ Passing the above to tomdoc.sh results in:
     Returns the exit code of the last command executed in debug mode or 0
       otherwise.
 
+(end of generated markdown)
+
 For maximum portability, tomdoc.sh was written in POSIX shell and only depends
 on ubiquitous Unix tools like `sed(1)` and `grep(1)`.
 

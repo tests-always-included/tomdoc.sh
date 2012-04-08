@@ -1,6 +1,13 @@
 History
 =======
 
+0.1.4 (2012-04-08)
+------------------
+
+* Support TomDoc'd `export parameter` without assignment.
+* Support TomDoc'd `: ${parameter:=value}` and `: ${parameter=value}`.
+* Add dedicated parsing tests.
+
 0.1.3 (2012-03-15)
 ------------------
 

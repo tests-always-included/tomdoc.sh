@@ -18,25 +18,22 @@
 # along with this program.  If not, see http://www.gnu.org/licenses/ .
 
 SHELL_PATH ?= $(SHELL)
-PERL_PATH ?= /usr/bin/perl
-TAR ?= $(TAR)
+SHELL_PATH_SQ = $(subst ','\'',$(SHELL_PATH))
 RM ?= rm -f
 PROVE ?= prove
+AGGREGATE_SCRIPT ?= aggregate-results.sh
 DEFAULT_TEST_TARGET ?= test
 
-# Shell quote;
-SHELL_PATH_SQ = $(subst ','\'',$(SHELL_PATH))
-
-T = $(wildcard t[0-9][0-9][0-9][0-9]-*.sh)
+T = $(wildcard *.t)
 
 all: $(DEFAULT_TEST_TARGET)
 
-test: pre-clean $(TEST_LINT)
+test: pre-clean
 	$(MAKE) aggregate-results-and-cleanup
 
-prove: pre-clean $(TEST_LINT)
+prove: pre-clean
 	@echo "*** prove ***"; $(PROVE) --exec '$(SHELL_PATH_SQ)' $(PROVE_OPTS) $(T) :: $(TEST_OPTS)
-	$(MAKE) clean
+	$(MAKE) clean-except-prove-cache
 
 $(T):
 	@echo "*** $@ ***"; '$(SHELL_PATH_SQ)' $@ $(TEST_OPTS)
@@ -44,29 +41,20 @@ $(T):
 pre-clean:
 	$(RM) -r test-results
 
-clean:
+clean-except-prove-cache:
 	$(RM) -r 'trash directory'.* test-results
+
+clean: clean-except-prove-cache
 	$(RM) .prove
-
-test-lint: test-lint-duplicates test-lint-executable
-
-test-lint-duplicates:
-	@dups=`echo $(T) | tr ' ' '\n' | sed 's/-.*//' | sort | uniq -d` && \
-		test -z "$$dups" || { \
-		echo >&2 "duplicate test numbers:" $$dups; exit 1; }
-
-test-lint-executable:
-	@bad=`for i in $(T); do test -x "$$i" || echo $$i; done` && \
-		test -z "$$bad" || { \
-		echo >&2 "non-executable tests:" $$bad; exit 1; }
 
 aggregate-results-and-cleanup: $(T)
 	$(MAKE) aggregate-results
 	$(MAKE) clean
 
 aggregate-results:
-	for f in test-results/t*-*.counts; do \
+	for f in test-results/*.counts; do \
 		echo "$$f"; \
-	done | '$(SHELL_PATH_SQ)' ./aggregate-results.sh
+	done | '$(SHELL_PATH_SQ)' '$(AGGREGATE_SCRIPT)'
 
-.PHONY: pre-clean $(T) aggregate-results clean
+.PHONY: all test prove $(T) pre-clean clean
+.PHONY: aggregate-results-and-cleanup aggregate-results

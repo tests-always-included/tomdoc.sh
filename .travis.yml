@@ -1,4 +1,4 @@
-language: erlang # no C/shell language support; use least-loaded worker(s)
+language: erlang # no shell language support; use least-loaded worker(s)
 
 install: make install
 
@@ -9,3 +9,7 @@ env:
 script: make test
 
 after_script: make uninstall
+
+branches:
+  only:
+    - master

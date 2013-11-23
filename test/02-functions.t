@@ -1,4 +1,5 @@
 #!/bin/sh
+# vi: set ft=sh :
 
 test_description="Parse shell functions"
 

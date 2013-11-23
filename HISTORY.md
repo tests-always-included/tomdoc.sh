@@ -1,6 +1,12 @@
 History
 =======
 
+0.1.5 (2013-11-23)
+------------------
+
+* Update to Sharness v0.3.0.
+* Let Travis only test master branch and pull requests.
+
 0.1.4 (2012-04-08)
 ------------------
 

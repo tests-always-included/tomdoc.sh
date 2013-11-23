@@ -21,6 +21,7 @@ SHELL_PATH ?= $(SHELL)
 SHELL_PATH_SQ = $(subst ','\'',$(SHELL_PATH))
 RM ?= rm -f
 PROVE ?= prove
+AGGREGATE_SCRIPT ?= aggregate-results.sh
 DEFAULT_TEST_TARGET ?= test
 
 T = $(wildcard *.t)
@@ -32,7 +33,7 @@ test: pre-clean
 
 prove: pre-clean
 	@echo "*** prove ***"; $(PROVE) --exec '$(SHELL_PATH_SQ)' $(PROVE_OPTS) $(T) :: $(TEST_OPTS)
-	$(MAKE) clean
+	$(MAKE) clean-except-prove-cache
 
 $(T):
 	@echo "*** $@ ***"; '$(SHELL_PATH_SQ)' $@ $(TEST_OPTS)
@@ -40,8 +41,10 @@ $(T):
 pre-clean:
 	$(RM) -r test-results
 
-clean:
+clean-except-prove-cache:
 	$(RM) -r 'trash directory'.* test-results
+
+clean: clean-except-prove-cache
 	$(RM) .prove
 
 aggregate-results-and-cleanup: $(T)
@@ -51,7 +54,7 @@ aggregate-results-and-cleanup: $(T)
 aggregate-results:
 	for f in test-results/*.counts; do \
 		echo "$$f"; \
-	done | '$(SHELL_PATH_SQ)' ./aggregate-results.sh
+	done | '$(SHELL_PATH_SQ)' '$(AGGREGATE_SCRIPT)'
 
 .PHONY: all test prove $(T) pre-clean clean
 .PHONY: aggregate-results-and-cleanup aggregate-results

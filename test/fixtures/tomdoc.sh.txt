@@ -9,6 +9,11 @@ SPACE_RE
 Regular expression matching whitespace.
 
 --------------------------------------------------------------------------------
+NOT_SPACE_RE
+
+The inverse of the above, must match at least one character
+
+--------------------------------------------------------------------------------
 NAME_RE
 
 Regular expression matching shell function or variable name.

@@ -32,28 +32,27 @@ test_debug() {
 
 Passing the above to tomdoc.sh results in:
 
-### API_VERSION
+```
+API_VERSION
+-----------
 
-    Public: Current API version in format "x.y.z".
+Public: Current API version in format "x.y.z".
 
-### test_debug()
+test_debug()
+------------
 
-    Public: Execute commands in debug mode.
+Public: Execute commands in debug mode.
 
-    Takes a single argument and evaluates it only when the test script is started
-    with --debug. This is primarily meant for use during the development of test
-    scripts.
+Takes a single argument and evaluates it only when the test script is started with --debug. This is primarily meant for use during the development of test scripts.
 
-    $1 - Commands to be executed.
+* `$1` - Commands to be executed.
 
-    Examples
+Examples
 
-      test_debug "cat some_log_file"
+    test_debug "cat some_log_file"
 
-    Returns the exit code of the last command executed in debug mode or 0
-      otherwise.
-
-(end of generated markdown)
+Returns the exit code of the last command executed in debug mode or 0 otherwise.
+```
 
 For maximum portability, tomdoc.sh was written in POSIX shell and only depends
 on ubiquitous Unix tools like `sed(1)` and `grep(1)`.
@@ -86,6 +85,8 @@ Usage
         -t, --text               produce plain text (default format)
         -m, --markdown           produce markdown
         -a, --access <level>     filter by access level
+
+    Parse TomDoc'd shell scripts and generate pretty documentation from it.
 
 For each TomDoc'd shell script you pass to tomdoc.sh, it will produce pretty
 documentation in plain text (option `--text`, the default) or markdown format

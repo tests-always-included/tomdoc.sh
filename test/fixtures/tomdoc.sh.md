@@ -1,52 +1,70 @@
-### TOMDOCSH_VERSION
+TOMDOCSH_VERSION
+----------------
 
-    Current version of tomdoc.sh.
+Current version of tomdoc.sh.
 
-### SPACE_RE
 
-    Regular expression matching whitespace.
+SPACE_RE
+--------
 
-### NAME_RE
+Regular expression matching whitespace.
 
-    Regular expression matching shell function or variable name.
 
-### uncomment()
+NOT_SPACE_RE
+------------
 
-    Strip leading whitespace and '#' from TomDoc strings.
+The inverse of the above, must match at least one character
 
-    Returns nothing.
 
-### generate_text()
+NAME_RE
+-------
 
-    Generate the documentation for a shell function or variable in plain text
-    format and write it to stdout.
+Regular expression matching shell function or variable name.
 
-    $1 - Function or variable name
-    $2 - TomDoc string
 
-    Returns nothing.
+uncomment()
+-----------
 
-### generate_markdown()
+Strip leading whitespace and '#' from TomDoc strings.
 
-    Generate the documentation for a shell function or variable in markdown format
-    and write it to stdout.
+Returns nothing.
 
-    $1 - Function or variable name
-    $2 - TomDoc string
 
-    Returns nothing.
+generate_text()
+---------------
 
-### parse_code()
+Generate the documentation for a shell function or variable in plain text format and write it to stdout.
 
-    Read lines from stdin, look for shell function or variable definition, and
-    print function or variable name if found; otherwise, print nothing.
+* $1 - Function or variable name
+* $2 - TomDoc string
 
-    Returns nothing.
+Returns nothing.
 
-### parse_tomdoc()
 
-    Read lines from stdin, look for TomDoc'd shell functions and variables, and
-    pass them to a generator for formatting.
+generate_markdown()
+-------------------
 
-    Returns nothing.
+Generate the documentation for a shell function or variable in markdown format and write it to stdout.
+
+* $1 - Function or variable name
+* $2 - TomDoc string
+
+Returns nothing.
+
+
+parse_code()
+------------
+
+Read lines from stdin, look for shell function or variable definition, and print function or variable name if found; otherwise, print nothing.
+
+Returns nothing.
+
+
+parse_tomdoc()
+--------------
+
+Read lines from stdin, look for TomDoc'd shell functions and variables, and pass them to a generator for formatting.
+
+Returns nothing.
+
 

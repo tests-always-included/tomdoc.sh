@@ -84,8 +84,8 @@ EOF
 generate_markdown() {
     local line last did_newline last_was_option
 
-    echo "$1"
-    echo "$1" | sed "s/./-/g"
+    echo '`'"$1"'`'
+    echo " $1 " | sed "s/./-/g"
     echo ""
 
     last=""

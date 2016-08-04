@@ -108,6 +108,7 @@ generate_markdown() {
             last_was_option=true
 
             # shellcheck disable=SC2030
+        
             did_newline=false
         else
             case "$line" in
@@ -161,6 +162,7 @@ generate_markdown() {
     done
 
     # shellcheck disable=SC2031
+
     if ! $did_newline; then
         echo ""
     fi

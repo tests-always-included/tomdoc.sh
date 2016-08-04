@@ -9,7 +9,8 @@
 #/
 #/ Parse TomDoc'd shell scripts and generate pretty documentation from it.
 #
-# Written by Mathias Lafeldt <mathias.lafeldt@gmail.com>
+# Written by Mathias Lafeldt <mathias.lafeldt@gmail.com>, later project was
+# transfered to Tyler Akins <fidian@rumkin.com>.
 
 set -e
 test -n "$TOMDOCSH_DEBUG" && set -x

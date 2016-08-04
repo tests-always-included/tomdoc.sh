@@ -65,7 +65,7 @@ Installation
 
 Installing tomdoc.sh is simple:
 
-    $ git clone git://github.com/mlafeldt/tomdoc.sh.git
+    $ git clone git://github.com/tests-always-included/tomdoc.sh.git
     $ cd tomdoc.sh
     $ make install
 
@@ -128,14 +128,13 @@ License
 Contact
 -------
 
-* Web: <https://github.com/mlafeldt/tomdoc.sh>
-* Mail: <mathias.lafeldt@gmail.com>
-* Twitter: [@mlafeldt](https://twitter.com/mlafeldt)
+* Web: <https://github.com/tests-always-included/tomdoc.sh>
+* Mail: <fidian@rumkin.com>
 
 
-[COPYING]: https://github.com/mlafeldt/tomdoc.sh/blob/master/test/COPYING
-[LICENSE]: https://github.com/mlafeldt/tomdoc.sh/blob/master/LICENSE
+[COPYING]: ./test/COPYING
+[LICENSE]: ./LICENSE
 [Sharness]: https://github.com/mlafeldt/Sharness
 [TomDoc]: http://tomdoc.org
-[fixtures]: https://github.com/mlafeldt/tomdoc.sh/tree/master/test/fixtures
+[fixtures]: ./fixtures
 [tomdoc.rb]: https://github.com/defunkt/tomdoc

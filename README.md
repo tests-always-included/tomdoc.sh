@@ -104,7 +104,7 @@ For testing, you can run tomdoc.sh on itself:
     $ ./tomdoc.sh --text tomdoc.sh
     $ ./tomdoc.sh --markdown tomdoc.sh
 
-The generated output can be seen as [text][tomdoc.sh.txt] and [html][tomdoc.sh.html].
+The generated output can be seen [here][fixtures].
 
 
 Tests
@@ -136,6 +136,5 @@ Contact
 [LICENSE]: ./LICENSE
 [Sharness]: https://github.com/mlafeldt/Sharness
 [TomDoc]: http://tomdoc.org
-[tomdoc.sh.txt]: ./fixtures/tomdoc.sh.txt
-[tomdoc.sh.html]: ./fixtures/tomdoc.sh.html
+[fixtures]: ./test/fixtures
 [tomdoc.rb]: https://github.com/defunkt/tomdoc

@@ -45,6 +45,8 @@ done
 
 # Regular expression matching whitespace.
 SPACE_RE='[[:space:]]*'
+# The inverse of the above, must match at least one character
+NOT_SPACE_RE='[^[:space:]][^[:space:]]*'
 # Regular expression matching shell function or variable name.
 NAME_RE='[a-zA-Z_][a-zA-Z0-9_]*'
 
@@ -80,12 +82,90 @@ EOF
 #
 # Returns nothing.
 generate_markdown() {
-    cat <<EOF
-### $1
+    local line last did_newline last_was_option
 
-$(echo "$2" | uncomment | sed -e "/^$/!s/^/    /")
+    echo '`'"$1"'`'
+    echo " $1 " | sed "s/./-/g"
+    echo ""
 
-EOF
+    last=""
+    did_newline=false
+    last_was_option=false
+    echo "$2" | uncomment | sed -e "s/$SPACE_RE$//" | while IFS='' read line; do
+        if echo "$line" | grep -q "^$SPACE_RE$NOT_SPACE_RE $SPACE_RE- "; then
+            # This is for arguments
+            if ! $did_newline; then
+                echo ""
+            fi
+
+            if echo "$line" | grep -q "^$NOT_SPACE_RE"; then
+                /usr/bin/env echo -n "* $line"
+            else
+                /usr/bin/env echo -n "    * "
+                /usr/bin/env echo -n "$line" | sed "s/^$SPACE_RE//"
+            fi
+
+            last_was_option=true
+
+            # shellcheck disable=SC2030
+        
+            did_newline=false
+        else
+            case "$line" in
+                "")
+                    # Check for end of paragraph / section
+                    if ! $did_newline; then
+                        echo ""
+                    fi
+
+                    echo ""
+                    did_newline=true
+                    last_was_option=false
+                    ;;
+
+                "  "*)
+                    # Examples and option continuation
+                    if $last_was_option; then
+                        /usr/bin/env echo -n "$line" | sed "s/^ */ /"
+                        did_newline=false
+                    else
+                        echo "  $line"
+                        did_newline=true
+                    fi
+                    ;;
+
+                "* "*)
+                    # A list should not continue a previous paragraph.
+                    echo "$line"
+                    did_newline=true
+                    ;;
+
+                *)
+                    # Paragraph text (does not start with a space)
+                    case "$last" in
+                        "")
+                            # Start a new paragraph
+                            /usr/bin/env echo -n "$line"
+                            ;;
+
+                        *)
+                            # Continue this line
+                            /usr/bin/env echo -n " $line"
+                            ;;
+                    esac
+                    did_newline=false
+                    last_was_option=false
+                    ;;
+            esac
+        fi
+        last="$line"
+    done
+
+    # shellcheck disable=SC2031
+
+    if ! $did_newline; then
+        echo ""
+    fi
 }
 
 # Read lines from stdin, look for shell function or variable definition, and

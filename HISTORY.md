@@ -1,6 +1,12 @@
 History
 =======
 
+0.1.6 (2016-08-04)
+------------------
+
+* Transferred to the `tests-always-included` organization on GitHub.
+* Improved the generated markdown
+
 0.1.5 (2013-11-23)
 ------------------
 

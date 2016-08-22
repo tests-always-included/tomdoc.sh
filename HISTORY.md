@@ -1,6 +1,12 @@
 History
 =======
 
+0.1.7 (2016-08-22)
+------------------
+
+* Fixed a problem that happens when lines contain escape codes that the POSIX
+  version of `echo` honors.
+
 0.1.6 (2016-08-04)
 ------------------
 

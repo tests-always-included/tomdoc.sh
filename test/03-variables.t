@@ -36,4 +36,21 @@ parse 'export param=value foo=bar'
 parse 'export param foo'
 parse ': ${param=value} foo=bar'
 
+rm expect
+touch expect
+
+parse() {
+    cat >script <<EOF
+# This should not be documented
+$1
+EOF
+
+    test_expect_success "Parse '$1'" "
+        tomdoc.sh script >result &&
+        test_cmp expect result
+    "
+}
+
+parse "sed -i 's/^[Unit\]/&\nWants=something/'"
+
 test_done

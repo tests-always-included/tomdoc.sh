@@ -51,6 +51,26 @@ NOT_SPACE_RE='[^[:space:]][^[:space:]]*'
 # Regular expression matching shell function or variable name.
 NAME_RE='[a-zA-Z_][a-zA-Z0-9_]*'
 
+# Writes content to stdout.  This is replacing the POSIX shell's echo command
+# with the one in the environment that supports flags and options.
+#
+# $@ - all arguments are passed to the echo command.
+#
+# Returns nothing.
+safe_echo() {
+    /usr/bin/env echo -E "$@"
+}
+
+# Writes content to stdout.  Identical to safe_echo() except this also
+# suppresses newlines.
+#
+# $@ - all arguments are passed to the echo command.
+#
+# Returns nothing.
+safe_echo_n() {
+    /usr/bin/env echo -nE "$@"
+}
+
 # Strip leading whitespace and '#' from TomDoc strings.
 #
 # Returns nothing.
@@ -70,7 +90,7 @@ generate_text() {
 --------------------------------------------------------------------------------
 $1
 
-$(echo "$2" | uncomment)
+$(safe_echo "$2" | uncomment)
 
 EOF
 }
@@ -85,25 +105,25 @@ EOF
 generate_markdown() {
     local line last did_newline last_was_option
 
-    echo '`'"$1"'`'
-    echo " $1 " | sed "s/./-/g"
+    safe_echo '`'"$1"'`'
+    safe_echo " $1 " | sed "s/./-/g"
     echo ""
 
     last=""
     did_newline=false
     last_was_option=false
-    echo "$2" | uncomment | sed -e "s/$SPACE_RE$//" | while IFS='' read line; do
-        if echo "$line" | grep -q "^$SPACE_RE$NOT_SPACE_RE $SPACE_RE- "; then
+    safe_echo "$2" | uncomment | sed -e "s/$SPACE_RE$//" | while IFS='' read line; do
+        if safe_echo "$line" | grep -q "^$SPACE_RE$NOT_SPACE_RE $SPACE_RE- "; then
             # This is for arguments
             if ! $did_newline; then
                 echo ""
             fi
 
-            if echo "$line" | grep -q "^$NOT_SPACE_RE"; then
-                /usr/bin/env echo -n "* $line"
+            if safe_echo "$line" | grep -q "^$NOT_SPACE_RE"; then
+                safe_echo_n "* $line"
             else
-                /usr/bin/env echo -n "    * "
-                /usr/bin/env echo -n "$line" | sed "s/^$SPACE_RE//"
+                safe_echo_n "    * "
+                safe_echo_n "$line" | sed "s/^$SPACE_RE//"
             fi
 
             last_was_option=true
@@ -127,17 +147,17 @@ generate_markdown() {
                 "  "*)
                     # Examples and option continuation
                     if $last_was_option; then
-                        /usr/bin/env echo -n "$line" | sed "s/^ */ /"
+                        safe_echo_n "$line" | sed "s/^ */ /"
                         did_newline=false
                     else
-                        echo "  $line"
+                        safe_echo "  $line"
                         did_newline=true
                     fi
                     ;;
 
                 "* "*)
                     # A list should not continue a previous paragraph.
-                    echo "$line"
+                    safe_echo "$line"
                     did_newline=true
                     ;;
 
@@ -145,13 +165,13 @@ generate_markdown() {
                     # Paragraph text (does not start with a space)
                     case "$last" in
                         "")
-                            # Start a new paragraph
-                            /usr/bin/env echo -n "$line"
+                            # Start a new paragraph - no space at the beginning
+                            safe_echo_n "$line"
                             ;;
 
                         *)
-                            # Continue this line
-                            /usr/bin/env echo -n " $line"
+                            # Continue this line - include space at the beginning
+                            safe_echo_n " $line"
                             ;;
                     esac
                     did_newline=false
@@ -204,7 +224,7 @@ parse_tomdoc() {
                     doc=; continue ;;
                 esac
 
-                name="$(echo "$line" | parse_code)"
+                name="$(safe_echo "$line" | parse_code)"
                 test -n "$name" && "$generate" "$name" "$doc"
             }
             doc=

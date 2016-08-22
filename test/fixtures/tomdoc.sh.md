@@ -22,6 +22,26 @@ The inverse of the above, must match at least one character
 Regular expression matching shell function or variable name.
 
 
+`safe_echo()`
+-------------
+
+Writes content to stdout.  This is replacing the POSIX shell's echo command with the one in the environment that supports flags and options.
+
+* $@ - all arguments are passed to the echo command.
+
+Returns nothing.
+
+
+`safe_echo_n()`
+---------------
+
+Writes content to stdout.  Identical to safe_echo() except this also suppresses newlines.
+
+* $@ - all arguments are passed to the echo command.
+
+Returns nothing.
+
+
 `uncomment()`
 -------------
 

@@ -111,7 +111,7 @@ generate_markdown() {
     did_newline=false
     last_was_option=false
 
-    printf "%s\n" "$2" | uncomment | sed -e "s/$SPACE_RE$//" | while IFS='' read line; do
+    printf "%s\n" "$2" | uncomment | sed -e "s/$SPACE_RE$//" | while IFS='' read -r line; do
         if printf "%s" "$line" | grep -q "^$SPACE_RE$NOT_SPACE_RE $SPACE_RE- "; then
             # This is for arguments
             if ! $did_newline; then
@@ -128,7 +128,7 @@ generate_markdown() {
             last_was_option=true
 
             # shellcheck disable=SC2030
-        
+
             did_newline=false
         else
             case "$line" in

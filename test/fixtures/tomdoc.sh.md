@@ -19,18 +19,18 @@ The inverse of the above, must match at least one character
 `NAME_RE`
 ---------
 
-Regular expression matching shell function or variable name.  Functions may use nearly every character.  See [issue #8].  Disallowed characters:
+Regular expression matching shell function or variable name.  Functions may use nearly every character.  See [issue #8].  Disallowed characters (hex, octal, then a description or a character):
 
-    \x00 null       \x01 SOH        \x09 Tab        \x0a Newline
-    \x20 Space      \x22 Quote      \x23 #          \x24 $
-    \x26 &          \x27 Apostrophe \x28 (          \x29 )
-    \x2d Hyphen     \x3b ;          \x3c <          \x3d =
-    \x3e >          \x5b [          \x5c Backslash  \x60 Backtick
-    \x7c |          \x7f Delete
+    00 000 null       01 001 SOH        09 011 Tab        0a 012 Newline
+    20 040 Space      22 042 Quote      23 043 #          24 044 $
+    26 046 &          27 047 Apostrophe 28 050 (          29 051 )
+    2d 055 Hyphen     3b 073 ;          3c 074 <          3d 075 =
+    3e 076 >          5b 133 [          5c 134 Backslash  60 140 Backtick
+    7c 174 |          7f 177 Delete
 
 Exceptions allowed as leading character:  \x3d and \x5b Exceptions allowed as secondary character: \x23 and \x2d
 
-The patterns below may look funny, because of the backslashes.  Those values are potentially triple escaped.  Backslash "\" is quoted to be literal in sed, "\\", and then it is escaped as a shell string, "\\\\".  Hex is similar where it is "\x00" for null and then escaped as a shell string, "\\x01".
+Must translate to raw characters because Mac OS X's sed does not work with escape sequences.  All escapes are handled by printf.
 
 [issue #8]: https://github.com/tests-always-included/tomdoc.sh/issues/8
 

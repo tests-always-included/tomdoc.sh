@@ -16,7 +16,25 @@ The inverse of the above, must match at least one character
 --------------------------------------------------------------------------------
 NAME_RE
 
-Regular expression matching shell function or variable name.
+Regular expression matching shell function or variable name.  Functions may
+use nearly every character.  See [issue #8].  Disallowed characters:
+
+  \x00 null       \x01 SOH        \x09 Tab        \x0a Newline
+  \x20 Space      \x22 Quote      \x23 #          \x24 $
+  \x26 &          \x27 Apostrophe \x28 (          \x29 )
+  \x2d Hyphen     \x3b ;          \x3c <          \x3d =
+  \x3e >          \x5b [          \x5c Backslash  \x60 Backtick
+  \x7c |          \x7f Delete
+
+Exceptions allowed as leading character:  \x3d and \x5b
+Exceptions allowed as secondary character: \x23 and \x2d
+
+The patterns below may look funny, because of the backslashes.  Those values
+are potentially triple escaped.  Backslash "\" is quoted to be literal in
+sed, "\\", and then it is escaped as a shell string, "\\\\".  Hex is similar
+where it is "\x00" for null and then escaped as a shell string, "\\x01".
+
+[issue #8]: https://github.com/tests-always-included/tomdoc.sh/issues/8
 
 --------------------------------------------------------------------------------
 uncomment()

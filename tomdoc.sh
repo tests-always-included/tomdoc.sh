@@ -86,7 +86,14 @@ NOT_SPACE_RE='[^[:space:]][^[:space:]]*'
 # escape sequences.  All escapes are handled by printf.
 #
 # [issue #8]: https://github.com/tests-always-included/tomdoc.sh/issues/8
-NAME_RE=$(printf "[^\001\009 \"#$&'()\055;<>\134\140|\177][^\001\009 \"$&'();<=>[\134\140|\177]*")
+FUNC_NAME_RE=$(printf "[^\\001\\011 \"#$&'()\\055;<>\\134\\140|\\177][^\\001\\011 \"$&'();<=>[\\134\\140|\\177]*")
+
+# Regular expression matching variable names.  Similar to FUNC_NAME_RE.
+# Variables are far more restrictive.
+#
+# Leading characters can be A-Z, _, a-z.
+# Secondary characters can be 0-9, =, A-Z, _, a-z
+VAR_NAME_RE='[A-Z_a-z][0-9=A-Z_a-z]*'
 
 # Strip leading whitespace and '#' from TomDoc strings.
 #
@@ -215,10 +222,10 @@ generate_markdown() {
 # Returns nothing.
 parse_code() {
     sed -n \
-        -e "s/^$SPACE_RE\(function\)\{0,1\}$SPACE_RE\($NAME_RE\)$SPACE_RE().*$/\2()/p" \
-        -e "s/^$SPACE_RE\(export\)\{0,1\}$SPACE_RE\($NAME_RE\)=.*$/\2/p" \
-        -e "s/^${SPACE_RE}export$SPACE_RE\($NAME_RE\).*$/\1/p" \
-        -e "s/^$SPACE_RE:$SPACE_RE\${\($NAME_RE\):\{0,1\}=.*$/\1/p"
+        -e "s/^$SPACE_RE\(function\)\{0,1\}$SPACE_RE\($FUNC_NAME_RE\)$SPACE_RE().*$/\2()/p" \
+        -e "s/^$SPACE_RE\(export\)\{0,1\}$SPACE_RE\($VAR_NAME_RE\)=.*$/\2/p" \
+        -e "s/^${SPACE_RE}export$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
+        -e "s/^$SPACE_RE:$SPACE_RE\${\($VAR_NAME_RE\):\{0,1\}=.*$/\1/p"
 }
 
 # Read lines from stdin, look for TomDoc'd shell functions and variables, and

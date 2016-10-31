@@ -16,8 +16,8 @@ Regular expression matching whitespace.
 The inverse of the above, must match at least one character
 
 
-`NAME_RE`
----------
+`FUNC_NAME_RE`
+--------------
 
 Regular expression matching shell function or variable name.  Functions may use nearly every character.  See [issue #8].  Disallowed characters (hex, octal, then a description or a character):
 
@@ -33,6 +33,14 @@ Exceptions allowed as leading character:  \x3d and \x5b Exceptions allowed as se
 Must translate to raw characters because Mac OS X's sed does not work with escape sequences.  All escapes are handled by printf.
 
 [issue #8]: https://github.com/tests-always-included/tomdoc.sh/issues/8
+
+
+`VAR_NAME_RE`
+-------------
+
+Regular expression matching variable names.  Similar to FUNC_NAME_RE. Variables are far more restrictive.
+
+Leading characters can be A-Z, _, a-z. Secondary characters can be 0-9, =, A-Z, _, a-z
 
 
 `uncomment()`

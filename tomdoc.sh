@@ -237,8 +237,11 @@ parse_tomdoc() {
     while read -r line; do
         case "$line" in
         '#'|'# '*)
-            doc="$doc$line
+            # Ignore Shellcheck directives
+            if ! [[ $line =~ ^"#"([[:space:]]+)?"shellcheck" ]]; then
+                doc="$doc$line
 "
+            fi
             ;;
         *)
             test -n "$line" -a -n "$doc" && {

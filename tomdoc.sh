@@ -147,8 +147,9 @@ generate_markdown() {
             if printf "%s" "$line" | grep -q "^$NOT_SPACE_RE"; then
                 printf "%s" "* $line"
             else
+                # Careful - BSD sed always adds a newline
                 printf "    * "
-                printf "%s" "$line" | sed "s/^$SPACE_RE//"
+                printf "%s" "$line" | sed "s/^$SPACE_RE//" | tr -d "\n"
             fi
 
             last_was_option=true
@@ -172,7 +173,8 @@ generate_markdown() {
                 "  "*)
                     # Examples and option continuation
                     if $last_was_option; then
-                        printf "%s" "$line" | sed "s/^ */ /"
+                        # Careful - BSD sed always adds a newline
+                        printf "%s" "$line" | sed "s/^ */ /" | tr -d "\n"
                         did_newline=false
                     else
                         printf "  %s\n" "$line"

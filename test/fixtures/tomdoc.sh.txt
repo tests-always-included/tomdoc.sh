@@ -33,6 +33,8 @@ Exceptions allowed as secondary character: \x23 and \x2d
 Must translate to raw characters because Mac OS X's sed does not work with
 escape sequences.  All escapes are handled by printf.
 
+Must use a hyphen first because otherwise it is an invalid range expression.
+
 [issue #8]: https://github.com/tests-always-included/tomdoc.sh/issues/8
 
 --------------------------------------------------------------------------------

@@ -1,6 +1,17 @@
 History
 =======
 
+0.1.8 (2018-03-12)
+------------------
+
+* Bash functions may use most character, so the pattern to match function names
+  was updated. See issue #8.
+* Variable names are more restrictive than function names, so a separate
+  pattern was made to match those instead of reusing the function name pattern.
+* BSD `sed` will always add a newline, so add workarounds to remove that
+  newline.
+* Removed `safe_echo` and `safe_echo_n` and use `printf` instead.
+
 0.1.7 (2016-08-22)
 ------------------
 

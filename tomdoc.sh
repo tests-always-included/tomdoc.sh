@@ -230,6 +230,10 @@ parse_code() {
         -e "s/^$SPACE_RE\(function\)\{0,1\}$SPACE_RE\($FUNC_NAME_RE\)$SPACE_RE().*$/\2()/p" \
         -e "s/^$SPACE_RE\(export\)\{0,1\}$SPACE_RE\($VAR_NAME_RE\)=.*$/\2/p" \
         -e "s/^${SPACE_RE}export$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
+        -e "s/^${SPACE_RE}declare${SPACE_RE}-xr$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
+        -e "s/^${SPACE_RE}declare${SPACE_RE}-x$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
+        -e "s/^${SPACE_RE}declare${SPACE_RE}-r$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
+        -e "s/^${SPACE_RE}declare${SPACE_RE}$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
         -e "s/^$SPACE_RE:$SPACE_RE\${\($VAR_NAME_RE\):\{0,1\}=.*$/\1/p"
 }
 

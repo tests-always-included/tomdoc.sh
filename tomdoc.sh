@@ -62,8 +62,11 @@ while test "$#" -ne 0; do
 done
 
 
-# Regular expression matching whitespace.
-SPACE_RE='[[:space:]]*'
+# Regular expression matching at least one whitespace.
+SPACE_RE='[[:space:]][[:space:]]*'
+
+# Regular expression matching optional whitespace.
+OPTIONAL_SPACE_RE='[[:space:]]*'
 
 # The inverse of the above, must match at least one character
 NOT_SPACE_RE='[^[:space:]][^[:space:]]*'
@@ -102,7 +105,7 @@ VAR_NAME_RE='[A-Z_a-z][0-9=A-Z_a-z]*'
 #
 # Returns nothing.
 uncomment() {
-    sed -e "s/^$SPACE_RE# \{0,1\}//"
+    sed -e "s/^$OPTIONAL_SPACE_RE#[[:space:]]\?//"
 }
 
 # Generate the documentation for a shell function or variable in plain text
@@ -141,7 +144,7 @@ generate_markdown() {
     last_was_option=false
 
     printf "%s\n" "$2" | uncomment | sed -e "s/$SPACE_RE$//" | while IFS='' read -r line; do
-        if printf "%s" "$line" | grep -q "^$SPACE_RE$NOT_SPACE_RE $SPACE_RE- "; then
+        if printf "%s" "$line" | grep -q "^$OPTIONAL_SPACE_RE$NOT_SPACE_RE$SPACE_RE-$SPACE_RE"; then
             # This is for arguments
             if ! $did_newline; then
                 printf "\n"
@@ -227,14 +230,12 @@ generate_markdown() {
 # Returns nothing.
 parse_code() {
     sed -n \
-        -e "s/^$SPACE_RE\(function\)\{0,1\}$SPACE_RE\($FUNC_NAME_RE\)$SPACE_RE().*$/\2()/p" \
-        -e "s/^$SPACE_RE\(export\)\{0,1\}$SPACE_RE\($VAR_NAME_RE\)=.*$/\2/p" \
-        -e "s/^${SPACE_RE}export$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
-        -e "s/^${SPACE_RE}declare${SPACE_RE}-xr$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
-        -e "s/^${SPACE_RE}declare${SPACE_RE}-x$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
-        -e "s/^${SPACE_RE}declare${SPACE_RE}-r$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
-        -e "s/^${SPACE_RE}declare${SPACE_RE}$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
-        -e "s/^$SPACE_RE:$SPACE_RE\${\($VAR_NAME_RE\):\{0,1\}=.*$/\1/p"
+        -e "s/^$OPTIONAL_SPACE_RE\(function$SPACE_RE\)\?\($FUNC_NAME_RE\)$OPTIONAL_SPACE_RE().*$/\2()/p" \
+        -e "s/^$OPTIONAL_SPACE_RE\(export$SPACE_RE\)\?\($VAR_NAME_RE\)=.*$/\2/p" \
+        -e "s/^${OPTIONAL_SPACE_RE}export$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
+        -e "s/^$OPTIONAL_SPACE_RE:$SPACE_RE\${\($VAR_NAME_RE\):\?=.*$/\1/p" \
+        -e "s/^${OPTIONAL_SPACE_RE}\(declare\|typeset\)$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\?\($VAR_NAME_RE\)=.*$/\3/p" \
+        -e "s/^${OPTIONAL_SPACE_RE}\(declare\|typeset\)$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\?\($VAR_NAME_RE\).*$/\3/p"
 }
 
 # Read lines from stdin, look for TomDoc'd shell functions and variables, and

@@ -36,6 +36,12 @@ parse 'export param=value foo=bar'
 parse 'export param foo'
 parse ': ${param=value} foo=bar'
 
+parse 'declare param'
+parse 'declare param=value'
+parse 'declare -r param=value'
+parse 'declare -ra param'
+parse 'typeset -anythingGoesHere param'
+
 rm expect
 touch expect
 

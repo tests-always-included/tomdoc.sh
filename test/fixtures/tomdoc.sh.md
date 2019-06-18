@@ -7,7 +7,13 @@ Current version of tomdoc.sh.
 `SPACE_RE`
 ----------
 
-Regular expression matching whitespace.
+Regular expression matching at least one whitespace.
+
+
+`OPTIONAL_SPACE_RE`
+-------------------
+
+Regular expression matching optional whitespace.
 
 
 `NOT_SPACE_RE`

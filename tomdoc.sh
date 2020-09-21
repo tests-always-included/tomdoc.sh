@@ -21,6 +21,17 @@ TOMDOCSH_VERSION="0.1.8"
 generate=generate_text
 access=
 
+SEDCMD="sed"
+OSUNAME="$(uname -s)"
+case "${OSUNAME}" in
+  *Darwin*)
+    if type -P gsed &>/dev/null; then
+      >&2 echo "Using gnu-sed (gsed) inplace of system default\n"
+      SEDCMD="gsed"
+    fi
+    ;;
+esac
+
 while test "$#" -ne 0; do
     case "$1" in
     -h|--h|--he|--hel|--help)
@@ -105,7 +116,7 @@ VAR_NAME_RE='[A-Z_a-z][0-9=A-Z_a-z]*'
 #
 # Returns nothing.
 uncomment() {
-    sed -e "s/^$OPTIONAL_SPACE_RE#[[:space:]]\?//"
+    $SEDCMD -e "s/^$OPTIONAL_SPACE_RE#[[:space:]]\?//"
 }
 
 # Generate the documentation for a shell function or variable in plain text
@@ -143,7 +154,7 @@ generate_markdown() {
     did_newline=false
     last_was_option=false
 
-    printf "%s\n" "$2" | uncomment | sed -e "s/$SPACE_RE$//" | while IFS='' read -r line; do
+    printf "%s\n" "$2" | uncomment | $SEDCMD -e "s/$SPACE_RE$//" | while IFS='' read -r line; do
         if printf "%s" "$line" | grep -q "^$OPTIONAL_SPACE_RE$NOT_SPACE_RE$SPACE_RE-$SPACE_RE"; then
             # This is for arguments
             if ! $did_newline; then
@@ -155,7 +166,7 @@ generate_markdown() {
             else
                 # Careful - BSD sed always adds a newline
                 printf "    * "
-                printf "%s" "$line" | sed "s/^$SPACE_RE//" | tr -d "\n"
+                printf "%s" "$line" | $SEDCMD "s/^$SPACE_RE//" | tr -d "\n"
             fi
 
             last_was_option=true
@@ -180,7 +191,7 @@ generate_markdown() {
                     # Examples and option continuation
                     if $last_was_option; then
                         # Careful - BSD sed always adds a newline
-                        printf "%s" "$line" | sed "s/^ */ /" | tr -d "\n"
+                        printf "%s" "$line" | $SEDCMD "s/^ */ /" | tr -d "\n"
                         did_newline=false
                     else
                         printf "  %s\n" "$line"
@@ -229,7 +240,7 @@ generate_markdown() {
 #
 # Returns nothing.
 parse_code() {
-    sed -n \
+    $SEDCMD -n \
         -e "s/^$OPTIONAL_SPACE_RE\(function$SPACE_RE\)\?\($FUNC_NAME_RE\)$OPTIONAL_SPACE_RE().*$/\2()/p" \
         -e "s/^$OPTIONAL_SPACE_RE\(export$SPACE_RE\)\?\($VAR_NAME_RE\)=.*$/\2/p" \
         -e "s/^${OPTIONAL_SPACE_RE}export$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \

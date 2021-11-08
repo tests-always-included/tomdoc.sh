@@ -1,0 +1,7 @@
+source-path=SCRIPTDIR
+
+# Expressions don't expand in single quotes, use double quotes for that.
+disable=SC2016
+
+# This function is only defined later. Move the definition up.
+disable=SC2218

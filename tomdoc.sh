@@ -23,7 +23,7 @@ access=
 
 while test "$#" -ne 0; do
     case "$1" in
-    -h|--h|--he|--hel|--help)
+    -h | --h | --he | --hel | --help)
         grep '^#/' <"$0" | cut -c4-
         exit 0
         ;;
@@ -31,15 +31,15 @@ while test "$#" -ne 0; do
         printf "tomdoc.sh version %s\n" "$TOMDOCSH_VERSION"
         exit 0
         ;;
-    -t|--t|--te|--tex|--text)
+    -t | --t | --te | --tex | --text)
         generate=generate_text
         shift
         ;;
-    -m|--m|--ma|--mar|--mark|--markd|--markdo|--markdow|--markdown)
+    -m | --m | --ma | --mar | --mark | --markd | --markdo | --markdow | --markdown)
         generate=generate_markdown
         shift
         ;;
-    -a|--a|--ac|--acc|--acce|--acces|--access)
+    -a | --a | --ac | --acc | --acce | --acces | --access)
         test "$#" -ge 2 || {
             printf "error: %s requires an argument\n" "$1" >&2
             exit 1
@@ -51,7 +51,7 @@ while test "$#" -ne 0; do
         shift
         break
         ;;
-    -|[!-]*)
+    - | [!-]*)
         break
         ;;
     -*)
@@ -60,7 +60,6 @@ while test "$#" -ne 0; do
         ;;
     esac
 done
-
 
 # Regular expression matching at least one whitespace.
 SPACE_RE='[[:space:]][[:space:]]*'
@@ -92,7 +91,6 @@ NOT_SPACE_RE='[^[:space:]][^[:space:]]*'
 #
 # [issue #8]: https://github.com/tests-always-included/tomdoc.sh/issues/8
 FUNC_NAME_RE=$(printf "[^-\\001\\011 \"#$&'();<>\\134\\140|\\177][^\\001\\011 \"$&'();<=>[\\134\\140|\\177]*")
-
 
 # Regular expression matching variable names.  Similar to FUNC_NAME_RE.
 # Variables are far more restrictive.
@@ -133,8 +131,6 @@ EOF
 #
 # Returns nothing.
 generate_markdown() {
-    local line last did_newline last_was_option
-
     printf "%s\n" '`'"$1"'`'
     printf "%s" " $1 " | tr -c - -
     printf "\n\n"
@@ -165,52 +161,52 @@ generate_markdown() {
             did_newline=false
         else
             case "$line" in
-                "")
-                    # Check for end of paragraph / section
-                    if ! $did_newline; then
-                        printf "\n"
-                    fi
-
+            "")
+                # Check for end of paragraph / section
+                if ! $did_newline; then
                     printf "\n"
-                    did_newline=true
-                    last_was_option=false
-                    ;;
+                fi
 
-                "  "*)
-                    # Examples and option continuation
-                    if $last_was_option; then
-                        # Careful - BSD sed always adds a newline
-                        printf "%s" "$line" | sed "s/^ */ /" | tr -d "\n"
-                        did_newline=false
-                    else
-                        printf "  %s\n" "$line"
-                        did_newline=true
-                    fi
-                    ;;
+                printf "\n"
+                did_newline=true
+                last_was_option=false
+                ;;
 
-                "* "*)
-                    # A list should not continue a previous paragraph.
-                    printf "%s\n" "$line"
+            "  "*)
+                # Examples and option continuation
+                if $last_was_option; then
+                    # Careful - BSD sed always adds a newline
+                    printf "%s" "$line" | sed "s/^ */ /" | tr -d "\n"
+                    did_newline=false
+                else
+                    printf "  %s\n" "$line"
                     did_newline=true
+                fi
+                ;;
+
+            "* "*)
+                # A list should not continue a previous paragraph.
+                printf "%s\n" "$line"
+                did_newline=true
+                ;;
+
+            *)
+                # Paragraph text (does not start with a space)
+                case "$last" in
+                "")
+                    # Start a new paragraph - no space at the beginning
+                    printf "%s" "$line"
                     ;;
 
                 *)
-                    # Paragraph text (does not start with a space)
-                    case "$last" in
-                        "")
-                            # Start a new paragraph - no space at the beginning
-                            printf "%s" "$line"
-                            ;;
-
-                        *)
-                            # Continue this line - include space at the beginning
-                            printf " %s" "$line"
-                            ;;
-                    esac
-
-                    did_newline=false
-                    last_was_option=false
+                    # Continue this line - include space at the beginning
+                    printf " %s" "$line"
                     ;;
+                esac
+
+                did_newline=false
+                last_was_option=false
+                ;;
             esac
         fi
 
@@ -246,20 +242,22 @@ parse_tomdoc() {
     doc=
     while read -r line; do
         case "$line" in
-        '#'|'# '*)
+        '#' | '# '*)
             doc="$doc$line
 "
             ;;
         *)
-            test -n "$line" -a -n "$doc" && {
+            test -n "$line" && test -n "$doc" && {
                 # Match access level if given.
                 test -n "$access" &&
-                case "$doc" in
-                "# $access:"*)
-                    ;;
-                *)
-                    doc=; continue ;;
-                esac
+                    case "$doc" in
+                    "# $access:"*) ;;
+
+                    *)
+                        doc=
+                        continue
+                        ;;
+                    esac
 
                 name="$(printf "%s" "$line" | parse_code)"
                 test -n "$name" && "$generate" "$name" "$doc"

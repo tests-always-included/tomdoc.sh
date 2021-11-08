@@ -1,0 +1,12 @@
+{
+    "shellformat.useEditorConfig": true,
+    "files.associations": {
+        "*.t": "shellscript"
+    },
+    "shellformat.flag": "-ln posix -ci",
+    "shellcheck.customArgs": ["-x"],
+    "shellcheck.useWorkspaceRootAsCwd": false,
+    "shellcheck.ignorePatterns": {
+        "test/sharness.sh": true
+    }
+}

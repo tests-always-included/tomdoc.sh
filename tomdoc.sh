@@ -242,6 +242,10 @@ parse_tomdoc() {
     doc=
     while read -r line; do
         case "$line" in
+        '# shellcheck'*)
+            continue
+            ;;
+
         '#' | '# '*)
             doc="$doc$line
 "

@@ -101,9 +101,11 @@ VAR_NAME_RE='[A-Z_a-z][0-9=A-Z_a-z]*'
 
 # Strip leading whitespace and '#' from TomDoc strings.
 #
+# Can not use \?, use \{0,1\} instead.
+#
 # Returns nothing.
 uncomment() {
-    sed -e "s/^$OPTIONAL_SPACE_RE#[[:space:]]\?//"
+    sed -e "s/^$OPTIONAL_SPACE_RE#[[:space:]]\{0,1\}//"
 }
 
 # Generate the documentation for a shell function or variable in plain text
@@ -223,15 +225,20 @@ generate_markdown() {
 # Read lines from stdin, look for shell function or variable definition, and
 # print function or variable name if found; otherwise, print nothing.
 #
+# Can not use \?, use \{0,1\} instead.
+# Can not use \(a\|b\), use two patterns instead.
+#
 # Returns nothing.
 parse_code() {
     sed -n \
-        -e "s/^$OPTIONAL_SPACE_RE\(function$SPACE_RE\)\?\($FUNC_NAME_RE\)$OPTIONAL_SPACE_RE().*$/\2()/p" \
-        -e "s/^$OPTIONAL_SPACE_RE\(export$SPACE_RE\)\?\($VAR_NAME_RE\)=.*$/\2/p" \
+        -e "s/^$OPTIONAL_SPACE_RE\(function$SPACE_RE\)\{0,1\}\($FUNC_NAME_RE\)$OPTIONAL_SPACE_RE().*$/\2()/p" \
+        -e "s/^$OPTIONAL_SPACE_RE\(export$SPACE_RE\)\{0,1\}\($VAR_NAME_RE\)=.*$/\2/p" \
         -e "s/^${OPTIONAL_SPACE_RE}export$SPACE_RE\($VAR_NAME_RE\).*$/\1/p" \
-        -e "s/^$OPTIONAL_SPACE_RE:$SPACE_RE\${\($VAR_NAME_RE\):\?=.*$/\1/p" \
-        -e "s/^${OPTIONAL_SPACE_RE}\(declare\|typeset\)$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\?\($VAR_NAME_RE\)=.*$/\3/p" \
-        -e "s/^${OPTIONAL_SPACE_RE}\(declare\|typeset\)$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\?\($VAR_NAME_RE\).*$/\3/p"
+        -e "s/^$OPTIONAL_SPACE_RE:$SPACE_RE\${\($VAR_NAME_RE\):\{0,1\}=.*$/\1/p" \
+        -e "s/^${OPTIONAL_SPACE_RE}declare$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\{0,1\}\($VAR_NAME_RE\)=.*$/\2/p" \
+        -e "s/^${OPTIONAL_SPACE_RE}declare$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\{0,1\}\($VAR_NAME_RE\).*$/\2/p" \
+        -e "s/^${OPTIONAL_SPACE_RE}typeset$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\{0,1\}\($VAR_NAME_RE\)=.*$/\2/p" \
+        -e "s/^${OPTIONAL_SPACE_RE}typeset$SPACE_RE\(-[a-zA-Z]*$SPACE_RE\)\{0,1\}\($VAR_NAME_RE\).*$/\2/p"
 }
 
 # Read lines from stdin, look for TomDoc'd shell functions and variables, and

@@ -1,6 +1,20 @@
 History
 =======
 
+0.1.10 (2022-03-29)
+-------------------
+
+* Tracked changes in HISTORY.
+*
+
+0.1.9 (2021-11-15)
+------------------
+
+* Ignore `# shellcheck` directives.
+* Added support for `declare` and `typeset`, then fixed patterns for Mac.
+* Reformatted code, added lint checks, added config files for tooling to help with development.
+* Added notes to watch out for issues when using Mac's built-in `sed`.
+
 0.1.8 (2018-03-12)
 ------------------
 

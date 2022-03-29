@@ -56,7 +56,7 @@ Leading characters can be A-Z, _, a-z. Secondary characters can be 0-9, =, A-Z, 
 
 Strip leading whitespace and '#' from TomDoc strings.
 
-Can not use \?, use \{0,1\} instead.
+Can not use \?, use \{0,1\} instead to preserve Mac support.
 
 Returns nothing.
 
@@ -88,7 +88,7 @@ Returns nothing.
 
 Read lines from stdin, look for shell function or variable definition, and print function or variable name if found; otherwise, print nothing.
 
-Can not use \?, use \{0,1\} instead. Can not use \(a\|b\), use two patterns instead.
+Can not use \?, use \{0,1\} instead to preserve Mac support. Can not use \(a\|b\), use two patterns instead for Mac support.
 
 Returns nothing.
 

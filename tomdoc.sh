@@ -16,7 +16,7 @@ set -e
 test -n "$TOMDOCSH_DEBUG" && set -x
 
 # Current version of tomdoc.sh.
-TOMDOCSH_VERSION="0.1.8"
+TOMDOCSH_VERSION="0.1.10"
 
 generate=generate_text
 access=
@@ -101,7 +101,7 @@ VAR_NAME_RE='[A-Z_a-z][0-9=A-Z_a-z]*'
 
 # Strip leading whitespace and '#' from TomDoc strings.
 #
-# Can not use \?, use \{0,1\} instead.
+# Can not use \?, use \{0,1\} instead to preserve Mac support.
 #
 # Returns nothing.
 uncomment() {
@@ -225,8 +225,8 @@ generate_markdown() {
 # Read lines from stdin, look for shell function or variable definition, and
 # print function or variable name if found; otherwise, print nothing.
 #
-# Can not use \?, use \{0,1\} instead.
-# Can not use \(a\|b\), use two patterns instead.
+# Can not use \?, use \{0,1\} instead to preserve Mac support.
+# Can not use \(a\|b\), use two patterns instead for Mac support.
 #
 # Returns nothing.
 parse_code() {
